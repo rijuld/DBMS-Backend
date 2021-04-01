@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `patient` (
     `breathing_rate` INT,
     `blood_group` VARCHAR(3) NOT NULL,
     `gender` VARCHAR(1) NOT NULL,
-    `admission_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `admission_date` DATETIME,
     `city` VARCHAR(255),
     `state`VARCHAR(255),
     `pincode`VARCHAR(255),
@@ -29,3 +29,7 @@ CREATE TABLE IF NOT EXISTS `patient` (
     CONSTRAINT FK_Doctor FOREIGN KEY (did) REFERENCES doctor(did)
 
 );
+
+/*
+INSERT INTO patient values(0,'rijul','dahiya','9999-12-31 23:59:59',1,1,1,1,'hello',1,1,1,1,'hello',1,'A+','M','9999-12-31 23:59:59','rohtak','haryana','124001','second','1358','none','2017-06-15');
+*/
