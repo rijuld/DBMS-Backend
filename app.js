@@ -13,7 +13,7 @@ var urlencodedParser = bodyParser.urlencoded({extended: false})
 const db = mysql.createConnection({
   host     : 'localhost',//your ip address
   user     : 'root',//write your mysql user here
-  password : '****', //write your mysql password here
+  password : '0000', //write your mysql password here
   database : 'dbms'//your database name
 }); 
 db.connect((err)=>{
