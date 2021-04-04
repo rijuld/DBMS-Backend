@@ -133,6 +133,31 @@ app.get('/doctor',(req,res)=>{
     res.json(rows)
   })
 })
+app.post('/doctor',urlencodedParser,(req,res)=>{
+  if(!req.body) return res.sendStatus(400)
+  const did =req.body.did;
+  const post=req.body.post;
+  const dob =req.body.dob
+  const first_name =req.body.first_name
+  const last_name =req.body.last_name
+  const gender =req.body.gender
+  const dept_id=req.body.dept_id
+  const password =req.body.password
+  let sql="INSERT INTO doctor values(?,?,?,?,?,?,?,?)"
+  db.query(sql,[did,post,dob,first_name,last_name,gender,dept_id,password],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to post for the doctor: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+   } 
+  console.log("I think we posted doctor successfully")
+})
+  console.log(req.body.dob)
+  res.status(200).send("Created doctor")
+})
+  
 //ICU TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/icu/:id',(req,res)=>{
