@@ -190,6 +190,34 @@ app.get('/icu',(req,res)=>{
     res.json(rows)
   })
 })
+
+app.post('/icu',urlencodedParser,(req,res)=>{
+  if(!req.body) return res.sendStatus(400)
+  const icuid =req.body.icuid
+  const hospital_name =req.body.hospital_name
+  const capacity =req.body.capacity
+  const icu_type =req.body.icu_type
+  const registration_no =req.body.registration_no
+  const city =req.body.city
+  const state =req.body.state
+  const pincode =req.body.pincode
+  const street  =req.body.street
+  const house_number =req.body.house_number
+  
+  let sql="INSERT INTO icu values(?,?,?,?,?,?,?,?,?,?)"
+  db.query(sql,[icuid,hospital_name,capacity,icu_type,registration_no,city,state,pincode,street,house_number],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to post for the icu: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we posted icu successfully")
+  })
+  console.log(req.body.dob)
+  res.status(200).send("Created icu")
+})
 //ORGAN TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/organ/:id',(req,res)=>{
