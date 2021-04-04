@@ -286,6 +286,29 @@ app.get('/department',(req,res)=>{
   })
 })
 
+app.post('/department',urlencodedParser,(req,res)=>{
+  if(!req.body) return res.sendStatus(400)
+  const dept_id =req.body.dept_id
+  const dept_name =req.body.dept_name
+  const capacity =req.body.capacity
+
+  
+  let sql="INSERT INTO department values(?,?,?)"
+  db.query(sql,[dept_id,dept_name,capacity],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to post for the department: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we posted department successfully")
+  })
+  console.log(req.body.dob)
+  res.status(200).send("Created department")
+})
+
+
 
 
 //DON'T EDIT THE PART WRITTEN BELOW
