@@ -252,6 +252,28 @@ app.get('/organ',(req,res)=>{
   })
 })
 
+app.post('/organ',urlencodedParser,(req,res)=>{
+  if(!req.body) return res.sendStatus(400)
+  const organid = req.body.organid
+  const quantity = req.body.quantity
+  const organ_name = req.body.organ_name
+
+  let sql="INSERT INTO organ values(?,?,?)"
+  db.query(sql,[organid,quantity,organ_name],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to post for the organ: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we posted organ successfully")
+  })
+  //console.log(req.body.organid)
+  res.status(200).send("Created organ")
+})
+
+
 //DEPARTMENT TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/department/:id',(req,res)=>{
@@ -291,7 +313,6 @@ app.post('/department',urlencodedParser,(req,res)=>{
   const dept_id =req.body.dept_id
   const dept_name =req.body.dept_name
   const capacity =req.body.capacity
-
   
   let sql="INSERT INTO department values(?,?,?)"
   db.query(sql,[dept_id,dept_name,capacity],(err,rows,fields)=>{
@@ -307,8 +328,6 @@ app.post('/department',urlencodedParser,(req,res)=>{
   console.log(req.body.dob)
   res.status(200).send("Created department")
 })
-
-
 
 
 //DON'T EDIT THE PART WRITTEN BELOW
