@@ -13,7 +13,7 @@ var urlencodedParser = bodyParser.urlencoded({extended: false})
 const db = mysql.createConnection({
   host     : 'localhost',//your ip address
   user     : 'root',//write your mysql user here
-  password : '****', //write your mysql password here
+  password : 'Rijul@1358', //write your mysql password here
   database : 'dbms'//your database name
 }); 
 db.connect((err)=>{
@@ -237,7 +237,7 @@ app.get('/department',(req,res)=>{
 
 //DON'T EDIT THE PART WRITTEN BELOW
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-port =process.env.PORT||3000; 
+port =process.env.PORT||5000; 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
