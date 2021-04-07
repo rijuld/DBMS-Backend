@@ -13,7 +13,7 @@ var urlencodedParser = bodyParser.urlencoded({extended: false})
 const db = mysql.createConnection({
   host     : 'localhost',//your ip address
   user     : 'root',//write your mysql user here
-  password : 'Rijul@1358', //write your mysql password here
+  password : '0000', //write your mysql password here
   database : 'dbms'//your database name
 }); 
 db.connect((err)=>{
@@ -133,6 +133,31 @@ app.get('/doctor',(req,res)=>{
     res.json(rows)
   })
 })
+app.post('/doctor',urlencodedParser,(req,res)=>{
+  if(!req.body) return res.sendStatus(400)
+  const did =req.body.did;
+  const post=req.body.post;
+  const dob =req.body.dob
+  const first_name =req.body.first_name
+  const last_name =req.body.last_name
+  const gender =req.body.gender
+  const dept_id=req.body.dept_id
+  const password =req.body.password
+  let sql="INSERT INTO doctor values(?,?,?,?,?,?,?,?)"
+  db.query(sql,[did,post,dob,first_name,last_name,gender,dept_id,password],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to post for the doctor: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+   } 
+  console.log("I think we posted doctor successfully")
+})
+  console.log(req.body.dob)
+  res.status(200).send("Created doctor")
+})
+  
 //ICU TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/icu/:id',(req,res)=>{
@@ -164,6 +189,34 @@ app.get('/icu',(req,res)=>{
     console.log("I think we fetched icus successfully")
     res.json(rows)
   })
+})
+
+app.post('/icu',urlencodedParser,(req,res)=>{
+  if(!req.body) return res.sendStatus(400)
+  const icuid =req.body.icuid
+  const hospital_name =req.body.hospital_name
+  const capacity =req.body.capacity
+  const icu_type =req.body.icu_type
+  const registration_no =req.body.registration_no
+  const city =req.body.city
+  const state =req.body.state
+  const pincode =req.body.pincode
+  const street  =req.body.street
+  const house_number =req.body.house_number
+  
+  let sql="INSERT INTO icu values(?,?,?,?,?,?,?,?,?,?)"
+  db.query(sql,[icuid,hospital_name,capacity,icu_type,registration_no,city,state,pincode,street,house_number],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to post for the icu: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we posted icu successfully")
+  })
+  console.log(req.body.dob)
+  res.status(200).send("Created icu")
 })
 //ORGAN TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,6 +252,28 @@ app.get('/organ',(req,res)=>{
   })
 })
 
+app.post('/organ',urlencodedParser,(req,res)=>{
+  if(!req.body) return res.sendStatus(400)
+  const organid = req.body.organid
+  const quantity = req.body.quantity
+  const organ_name = req.body.organ_name
+
+  let sql="INSERT INTO organ values(?,?,?)"
+  db.query(sql,[organid,quantity,organ_name],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to post for the organ: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we posted organ successfully")
+  })
+  //console.log(req.body.organid)
+  res.status(200).send("Created organ")
+})
+
+
 //DEPARTMENT TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/department/:id',(req,res)=>{
@@ -233,6 +308,26 @@ app.get('/department',(req,res)=>{
   })
 })
 
+app.post('/department',urlencodedParser,(req,res)=>{
+  if(!req.body) return res.sendStatus(400)
+  const dept_id =req.body.dept_id
+  const dept_name =req.body.dept_name
+  const capacity =req.body.capacity
+  
+  let sql="INSERT INTO department values(?,?,?)"
+  db.query(sql,[dept_id,dept_name,capacity],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to post for the department: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we posted department successfully")
+  })
+  console.log(req.body.dob)
+  res.status(200).send("Created department")
+})
 
 
 //DON'T EDIT THE PART WRITTEN BELOW
