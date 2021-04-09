@@ -5,15 +5,20 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 var indexRouter = require('./routes');
 var usersRouter = require('./routes/users');
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false})
 
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 const db = mysql.createConnection({
   host     : 'localhost',//your ip address
   user     : 'root',//write your mysql user here
-  password : '0000', //write your mysql password here
+  password : 'Rijul@1358', //write your mysql password here
   database : 'dbms'//your database name
 }); 
 db.connect((err)=>{
@@ -21,10 +26,12 @@ db.connect((err)=>{
   console.log('mysql connected');
 })
 var app = express();
+app.use(cors(corsOptions));
 app.use(express.urlencoded({extended: false}));
 //DON'T EDIT THE PART ABOVE THIS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//perso
 //PATIENT TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/patient/:id',(req,res)=>{
@@ -272,8 +279,6 @@ app.post('/organ',urlencodedParser,(req,res)=>{
   //console.log(req.body.organid)
   res.status(200).send("Created organ")
 })
-
-
 //DEPARTMENT TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/department/:id',(req,res)=>{
@@ -333,7 +338,7 @@ app.post('/department',urlencodedParser,(req,res)=>{
 //DON'T EDIT THE PART WRITTEN BELOW
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 port =process.env.PORT||5000; 
-// view engine setup
+// this 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(logger('dev'));
