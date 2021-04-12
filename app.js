@@ -13,12 +13,12 @@ var urlencodedParser = bodyParser.urlencoded({extended: false})
 
 var corsOptions = {
   origin: 'http://localhost:3000',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  optionsSuccessStatus: 200 
 }
 const db = mysql.createConnection({
   host     : 'localhost',//your ip address
   user     : 'root',//write your mysql user here
-  password : '****', //write your mysql password here
+  password : 'Rijul@1358', //write your mysql password here
   database : 'dbms'//your database name
 }); 
 db.connect((err)=>{
@@ -103,6 +103,31 @@ app.delete('/patient/:id',(req,res)=>{
     console.log("I think we deleted the patient phone number successfully")
     res.json(rows[0])
   })
+  sql="delete from donateorgans where patientid = ?"
+  db.query(sql,[patientid],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to query for the patient: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we deleted the patient successfully")
+    res.json(rows[0])
+  })
+
+  sql="delete from receiveorgans where patientid = ?"
+  db.query(sql,[patientid],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to query for the patient: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we deleted the patient successfully")
+    res.json(rows[0])
+  })
 
   sql="delete from patient where pid = ?"
   db.query(sql,[patientid],(err,rows,fields)=>{
@@ -116,6 +141,9 @@ app.delete('/patient/:id',(req,res)=>{
     console.log("I think we deleted the patient successfully")
     res.json(rows[0])
   })
+
+  
+
 })
 
 app.get('/patient',(req,res)=>{
@@ -377,9 +405,104 @@ app.post('/organ',urlencodedParser,(req,res)=>{
     } 
     console.log("I think we posted organ successfully")
   })
+
   //console.log(req.body.organid)
   res.status(200).send("Created organ")
 })
+//receive  organs table 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+app.get('/receiveorgans',(req,res)=>{
+  let sql="Select * from receiveorgans"
+  db.query(sql,(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to query for the receiveorgans: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we fetched receiveorgans successfully")
+    res.json(rows)
+  })
+})
+
+app.post('/receiveorgans',urlencodedParser,(req,res)=>{
+  if(!req.body) return res.sendStatus(400)
+  const organid = req.body.organid
+  const patientid= req.body.patientid
+  let sql="INSERT INTO receiveorgans values(?,?)"
+  db.query(sql,[patientid,organid],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to post for the receiveorgans: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we posted receiveorgans successfully")
+  })
+
+  
+  //console.log(req.body.organid)
+  res.status(200).send("Created organ")
+})
+
+
+
+//organdonate table
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//donate
+
+
+app.get('/donateorgans',(req,res)=>{
+  let sql="Select * from donateorgans"
+  db.query(sql,(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to query for the donateorgans: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we fetched donateorgans successfully")
+    res.json(rows)
+  })
+})
+
+app.post('/donateorgans',urlencodedParser,(req,res)=>{
+  if(!req.body) return res.sendStatus(400)
+  const organid = req.body.organid
+  const patientid= req.body.patientid
+  let sql="INSERT INTO donateorgans values(?,?)"
+  db.query(sql,[patientid,organid],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to post for the donateorgans: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we posted donateorgans successfully")
+  })
+  
+  sql="UPDATE organ set quantity =quantity+1 where organid=?"
+  db.query(sql,[organid],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to post for the organ: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we posted organ successfully")
+  })
+  //console.log(req.body.organid)
+  res.status(200).send("Created organ")
+})
+
 //DEPARTMENT TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/department/:id',(req,res)=>{
