@@ -5,11 +5,16 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 var indexRouter = require('./routes');
 var usersRouter = require('./routes/users');
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false})
 
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 const db = mysql.createConnection({
   host     : 'localhost',//your ip address
   user     : 'root',//write your mysql user here
@@ -21,10 +26,12 @@ db.connect((err)=>{
   console.log('mysql connected');
 })
 var app = express();
+app.use(cors(corsOptions));
 app.use(express.urlencoded({extended: false}));
 //DON'T EDIT THE PART ABOVE THIS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//perso
 //PATIENT TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/patient/:id',(req,res)=>{
@@ -133,6 +140,31 @@ app.get('/doctor',(req,res)=>{
     res.json(rows)
   })
 })
+app.post('/doctor',urlencodedParser,(req,res)=>{
+  if(!req.body) return res.sendStatus(400)
+  const did =req.body.did;
+  const post=req.body.post;
+  const dob =req.body.dob
+  const first_name =req.body.first_name
+  const last_name =req.body.last_name
+  const gender =req.body.gender
+  const dept_id=req.body.dept_id
+  const password =req.body.password
+  let sql="INSERT INTO doctor values(?,?,?,?,?,?,?,?)"
+  db.query(sql,[did,post,dob,first_name,last_name,gender,dept_id,password],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to post for the doctor: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+   } 
+  console.log("I think we posted doctor successfully")
+})
+  console.log(req.body.dob)
+  res.status(200).send("Created doctor")
+})
+  
 //ICU TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/icu/:id',(req,res)=>{
@@ -164,6 +196,34 @@ app.get('/icu',(req,res)=>{
     console.log("I think we fetched icus successfully")
     res.json(rows)
   })
+})
+
+app.post('/icu',urlencodedParser,(req,res)=>{
+  if(!req.body) return res.sendStatus(400)
+  const icuid =req.body.icuid
+  const hospital_name =req.body.hospital_name
+  const capacity =req.body.capacity
+  const icu_type =req.body.icu_type
+  const registration_no =req.body.registration_no
+  const city =req.body.city
+  const state =req.body.state
+  const pincode =req.body.pincode
+  const street  =req.body.street
+  const house_number =req.body.house_number
+  
+  let sql="INSERT INTO icu values(?,?,?,?,?,?,?,?,?,?)"
+  db.query(sql,[icuid,hospital_name,capacity,icu_type,registration_no,city,state,pincode,street,house_number],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to post for the icu: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we posted icu successfully")
+  })
+  console.log(req.body.dob)
+  res.status(200).send("Created icu")
 })
 //ORGAN TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -219,8 +279,6 @@ app.post('/organ',urlencodedParser,(req,res)=>{
   //console.log(req.body.organid)
   res.status(200).send("Created organ")
 })
-
-
 //DEPARTMENT TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/department/:id',(req,res)=>{
@@ -260,7 +318,6 @@ app.post('/department',urlencodedParser,(req,res)=>{
   const dept_id =req.body.dept_id
   const dept_name =req.body.dept_name
   const capacity =req.body.capacity
- 
   
   let sql="INSERT INTO department values(?,?,?)"
   db.query(sql,[dept_id,dept_name,capacity],(err,rows,fields)=>{
@@ -277,18 +334,11 @@ app.post('/department',urlencodedParser,(req,res)=>{
   res.status(200).send("Created department")
 })
 
-// 
-
-// app.listen(3000,()=>{
-
-// })
-
-
 
 //DON'T EDIT THE PART WRITTEN BELOW
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-port =process.env.PORT||3000; 
-// view engine setup
+port =process.env.PORT||5000; 
+// this 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(logger('dev'));
