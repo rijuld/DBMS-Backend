@@ -38,6 +38,7 @@ app.get('/patient/:id',(req,res)=>{
   console.log("fetching user with id: "+ req.params.id)
   let patientid=parseInt(req.params.id)
   let sql="Select * from patient where pid = ?"
+  let array=[]
   db.query(sql,[patientid],(err,rows,fields)=>{
     if(err)
     {
@@ -47,7 +48,73 @@ app.get('/patient/:id',(req,res)=>{
       return
     } 
     console.log("I think we fetched patients successfully")
-    res.json(rows)
+    res.json(rows[0])
+  })
+})
+
+app.get('/patientdoctor/:id',(req,res)=>{
+  console.log("fetching user with id: "+ req.params.id)
+  let patientid=parseInt(req.params.id)
+  let sql="Select doctor.first_name,doctor.last_name from patient,doctor where patient.pid = ? and doctor.did=patient.did"
+  db.query(sql,[patientid],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to query for the patient: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we fetched patient's doctor successfully")
+    res.json(rows[0])
+  })
+})
+
+app.get('/patienticu/:id',(req,res)=>{
+  console.log("fetching user with id: "+ req.params.id)
+  let patientid=parseInt(req.params.id)
+  let sql="Select icu.hospital_name from patient,icu where patient.pid = ? and icu.icuid=patient.icuid"
+  db.query(sql,[patientid],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to query for the patient: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we fetched patient's doctor successfully")
+    res.json(rows[0])
+  })
+})
+
+
+app.delete('/patient/:id',(req,res)=>{
+  console.log("fetching user with id: "+ req.params.id)
+  let patientid=parseInt(req.params.id)
+
+  let sql="delete from patientphone where pid = ?"
+  db.query(sql,[patientid],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to query for the patient: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we deleted the patient phone number successfully")
+    res.json(rows[0])
+  })
+
+  sql="delete from patient where pid = ?"
+  db.query(sql,[patientid],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to query for the patient: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we deleted the patient successfully")
+    res.json(rows[0])
   })
 })
 
@@ -122,7 +189,41 @@ app.get('/doctor/:id',(req,res)=>{
       return
     } 
     console.log("I think we fetched doctors successfully")
-    res.json(rows)
+    res.json(rows[0])
+  })
+})
+
+app.get('/doctordepartment/:id',(req,res)=>{
+  console.log("fetching user with id: "+ req.params.id)
+  let doctorid=parseInt(req.params.id)
+  let sql="Select department.dept_name from doctor,department where doctor.did = ? and department.dept_id=doctor.dept_id"
+  db.query(sql,[doctorid],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to query for the doctor: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we fetched doctor's doctor successfully")
+    res.json(rows[0])
+  })
+})
+
+app.delete('/doctor/:id',(req,res)=>{
+  console.log("fetching doctor with id: "+ req.params.id)
+  let doctorid=parseInt(req.params.id)
+  let sql="delete from doctor where did = ?"
+  db.query(sql,[doctorid],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to query for the doctor: "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we deleted the doctor successfully")
+    res.json(rows[0])
   })
 })
 
@@ -180,7 +281,7 @@ app.get('/icu/:id',(req,res)=>{
       return
     } 
     console.log("I think we fetched icus successfully")
-    res.json(rows)
+    res.json(rows[0])
   })
 })
 app.get('/icu',(req,res)=>{
@@ -240,7 +341,7 @@ app.get('/organ/:id',(req,res)=>{
       return
     } 
     console.log("I think we fetched organs successfully")
-    res.json(rows)
+    res.json(rows[0])
   })
 })
 
@@ -294,7 +395,7 @@ app.get('/department/:id',(req,res)=>{
       return
     } 
     console.log("I think we fetched departments successfully")
-    res.json(rows)
+    res.json(rows[0])
   })
 })
 
