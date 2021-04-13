@@ -359,3 +359,26 @@ app.use(function(err, req, res, next) {
 });
 module.exports = app;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// post req for pwd and pid
+
+app.post('/login_patient',(req,res)=>{
+  const pid=req.body.pid;
+  const password= req.body.password;
+
+  db.query(
+    "select * from patient where pid=? and passowrd=?",
+    [pid,password],
+    (err,result)=> {
+      if(err)
+      res.send({err:err});
+
+      if(result.length>0)
+      res.send(result);
+
+      else
+      res.send({messgae: "wrong username/password combination"});
+    }
+  )
+})
+
