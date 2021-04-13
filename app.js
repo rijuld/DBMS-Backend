@@ -557,7 +557,26 @@ app.post('/department',urlencodedParser,(req,res)=>{
   console.log(req.body.dob)
   res.status(200).send("Created department")
 })
-
+//Donation entries route=>
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+app.get('/receive_entries/:organid/:pincode',(req,res)=>{
+  console.log("fetching department with orgnaid: "+ req.params.organid)
+  let organid=parseInt(req.params.organid)
+  let pincode=parseInt(req.params.pincode)
+  let sql="select patient.first_name, patient.pid,patientphone.phone_no, icu.hospital_name from donateorgans, icu, patient,patientphone where patient.icuid=icu.icuid and patientphone.pid=patient.pid and patient.pid=donateorgans.patientid and donateorgans.organid=? and icu.pincode=?"
+  db.query(sql,[organid,pincode],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to query  "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we fetched")
+    res.json(rows)
+  })
+  
+})
 
 //DON'T EDIT THE PART WRITTEN BELOW
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
