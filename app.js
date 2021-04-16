@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: false }));
 //perso
 //PATIENT TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-<<<<<<< HEAD
+//<<<<<<< HEAD
 app.get('/patient/:id',(req,res)=>{
   console.log("fetching user with id: "+ req.params.id)
   let patientid=parseInt(req.params.id)
@@ -302,7 +302,23 @@ app.delete("/doctor/:id", (req, res) => {
     res.json(rows[0]);
   });
 });
-
+app.post("/doctorphone", urlencodedParser, (req, res) => {
+  if (!req.body) return res.sendStatus(400);
+  const phone_no = req.body.phone_no;
+  const did = req.body.did;
+  let sql = "INSERT INTO docphone values(?,?)";
+  db.query(sql, [phone_no, did], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to post for the doctor phone number: " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
+    console.log("We posted doctor phone number successfully");
+  });
+  console.log(req.body.dob);
+  res.status(200).send("Created doctor phone number");
+});
 app.get("/doctor", (req, res) => {
   let sql = "Select * from doctor";
   db.query(sql, (err, rows, fields) => {
