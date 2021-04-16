@@ -416,6 +416,24 @@ app.post("/icu", urlencodedParser, (req, res) => {
   console.log(req.body.dob);
   res.status(200).send("Created icu");
 });
+
+app.post("/icuphone", urlencodedParser, (req, res) => {
+  if (!req.body) return res.sendStatus(400);
+  const contact_no = req.body.contact_no;
+  const icuid = req.body.icuid;
+  let sql = "INSERT INTO icuphone values(?,?)";
+  db.query(sql, [contact_no, icuid], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to post for the icu phone number: " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
+    console.log("I think we posted icu phone number successfully");
+  });
+  console.log(req.body.dob);
+  res.status(200).send("Created icu Phone number");
+});
 //ORGAN TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get("/organ/:id", (req, res) => {
