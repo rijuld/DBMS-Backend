@@ -47,7 +47,7 @@ app.get('/patient/:id',(req,res)=>{
       res.end()
       return
     } 
-    console.log("I think we fetched patients successfully")
+    console.log("patient route")
     res.json(rows[0])
   })
 })
@@ -112,7 +112,7 @@ app.delete('/patient/:id',(req,res)=>{
       res.end()
       return
     } 
-    console.log("I think we deleted the patient successfully")
+    console.log("HELLO")
     res.json(rows[0])
   })
 
@@ -125,7 +125,7 @@ app.delete('/patient/:id',(req,res)=>{
       res.end()
       return
     } 
-    console.log("I think we deleted the patient successfully")
+    console.log("HELLO")
     res.json(rows[0])
   })
 
@@ -138,7 +138,7 @@ app.delete('/patient/:id',(req,res)=>{
       res.end()
       return
     } 
-    console.log("I think we deleted the patient successfully")
+    console.log("HELLO")
     res.json(rows[0])
   })
 
@@ -155,8 +155,8 @@ app.get('/patient',(req,res)=>{
       res.sendStatus(500)
       res.end()
       return
-    } 
-    console.log("I think we fetched patients successfully")
+    }
+    console.log("patient route all")
     res.json(rows)
   })
 })
@@ -574,8 +574,39 @@ app.get('/receive_entries/:organid/:pincode',(req,res)=>{
     } 
     console.log("I think we fetched")
     res.json(rows)
-  })
+    })
   
+})
+
+
+//LOGIN Patient
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+app.post('/login_patient',urlencodedParser,(req,res)=>{
+  if(!req.body) return res.sendStatus(400)
+  const pid=req.body.pid;
+  const password= req.body.password;
+  console.log(pid)
+  console.log(password)
+  let sql="select * from patient where pid=? and password=?"
+  db.query(sql,[pid,password],(err,rows,fields)=> {
+      if(err)
+      {
+        console.log("Failed: "+err)
+        res.sendStatus(500)
+        res.end()
+        return
+      }
+
+     if(rows.length>0)
+      {
+        console.log("the number of rows are greater than 0")
+      }
+      else
+      {
+        res.send({messgae: 0});
+      } 
+      
+    })
 })
 
 //DON'T EDIT THE PART WRITTEN BELOW
