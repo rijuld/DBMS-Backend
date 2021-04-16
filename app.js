@@ -658,6 +658,36 @@ app.post('/login_patient',urlencodedParser,(req,res)=>{
     })
 })
 
+//LOGIN Doctor
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+app.post('/login_doctor',urlencodedParser,(req,res)=>{
+  if(!req.body) return res.sendStatus(400)
+  const did=req.body.did;
+  const password= req.body.password;
+  console.log(did)
+  console.log(password)
+  let sql="select * from doctor where did=? and password=?"
+  db.query(sql,[did,password],(err,rows,fields)=> {
+      if(err)
+      {
+        console.log("Failed: "+err)
+        res.sendStatus(500)
+        res.end()
+        return
+      }
+ 
+     if(rows.length>0)
+      {
+        console.log("the number of rows are greater than 0")
+      }
+      else
+      {
+        res.send({messgae: 0});
+      } 
+      
+    })
+})
+
 //DON'T EDIT THE PART WRITTEN BELOW
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 port = process.env.PORT || 5000;
