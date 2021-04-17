@@ -18,7 +18,7 @@ var corsOptions = {
 const db = mysql.createConnection({
   host: "localhost", //your ip address
   user: "root", //write your mysql user here
-  password: "0000", //write your mysql password here
+  password: "Rijul@1358", //write your mysql password here
   database: "dbms", //your database name
 });
 db.connect((err) => {
@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: false }));
 //perso
 //PATIENT TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//<<<<<<< HEAD
+
 app.get('/patient/:id',(req,res)=>{
   console.log("fetching user with id: "+ req.params.id)
   let patientid=parseInt(req.params.id)
@@ -687,6 +687,7 @@ app.post('/login_patient',urlencodedParser,(req,res)=>{
       else
       {
         res.send({messgae: 0});
+
       } 
       
     })
@@ -712,15 +713,37 @@ app.post('/login_doctor',urlencodedParser,(req,res)=>{
  
      if(rows.length>0)
       {
-        console.log("the number of rows are greater than 0")
+        res.sendStatus(200)
+
       }
       else
       {
-        res.send({messgae: 0});
+        res.sendStatus(201)
+      
       } 
       
     })
 })
+
+app.get('/login_doctor/:did/:password',(req,res)=>{
+  let did=parseInt(req.params.did)
+  let password=parseInt(req.params.password)
+  let sql="select * from doctor where did=? and password=?"
+  db.query(sql,[did,password],(err,rows,fields)=>{
+    if(err)
+    {
+      console.log("Failed to query  "+err)
+      res.sendStatus(500)
+      res.end()
+      return
+    } 
+    console.log("I think we fetched")
+    res.json(rows[0])
+    })
+  
+})
+
+
 
 //DON'T EDIT THE PART WRITTEN BELOW
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
