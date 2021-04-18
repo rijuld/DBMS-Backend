@@ -18,7 +18,7 @@ var corsOptions = {
 const db = mysql.createConnection({
   host: "localhost", //your ip address
   user: "root", //write your mysql user here
-  password: "Rijul@1358", //write your mysql password here
+  password: "****", //write your mysql password here
   database: "dbms", //your database name
 });
 db.connect((err) => {
@@ -302,7 +302,23 @@ app.delete("/doctor/:id", (req, res) => {
     res.json(rows[0]);
   });
 });
-
+app.post("/doctorphone", urlencodedParser, (req, res) => {
+  if (!req.body) return res.sendStatus(400);
+  const phone_no = req.body.phone_no;
+  const did = req.body.did;
+  let sql = "INSERT INTO docphone values(?,?)";
+  db.query(sql, [phone_no, did], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to post for the doctor phone number: " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
+    console.log("We posted doctor phone number successfully");
+  });
+  console.log(req.body.dob);
+  res.status(200).send("Created doctor phone number");
+});
 app.get("/doctor", (req, res) => {
   let sql = "Select * from doctor";
   db.query(sql, (err, rows, fields) => {
@@ -415,6 +431,24 @@ app.post("/icu", urlencodedParser, (req, res) => {
   );
   console.log(req.body.dob);
   res.status(200).send("Created icu");
+});
+
+app.post("/icuphone", urlencodedParser, (req, res) => {
+  if (!req.body) return res.sendStatus(400);
+  const contact_no = req.body.contact_no;
+  const icuid = req.body.icuid;
+  let sql = "INSERT INTO icuphone values(?,?)";
+  db.query(sql, [contact_no, icuid], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to post for the icu phone number: " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
+    console.log("I think we posted icu phone number successfully");
+  });
+  console.log(req.body.dob);
+  res.status(200).send("Created icu Phone number");
 });
 //ORGAN TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
