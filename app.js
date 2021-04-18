@@ -645,15 +645,16 @@ app.post('/login_patient',urlencodedParser,(req,res)=>{
         res.end()
         return
       }
-
+ 
      if(rows.length>0)
       {
-        console.log("the number of rows are greater than 0")
+        res.sendStatus(200)
+
       }
       else
       {
-        res.send({messgae: 0});
-
+        res.sendStatus(201)
+      
       } 
       
     })
