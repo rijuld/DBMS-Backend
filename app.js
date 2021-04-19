@@ -18,7 +18,7 @@ var corsOptions = {
 const db = mysql.createConnection({
   host: "localhost", //your ip address
   user: "root", //write your mysql user here
-  password: "****", //write your mysql password here
+  password: "Rijul@1358", //write your mysql password here
   database: "dbms", //your database name
 });
 db.connect((err) => {
@@ -223,7 +223,7 @@ app.post("/patient", urlencodedParser, (req, res) => {
     (err, rows, fields) => {
       if (err) {
         console.log("Failed to post for the patient: " + err);
-        res.sendStatus(500);
+        res.sendStatus(201);
         res.end();
         return;
       }
@@ -231,6 +231,7 @@ app.post("/patient", urlencodedParser, (req, res) => {
     }
   );
   console.log(req.body.dob);
+  res.sendStatus(200);
   res.status(200).send("Created patient");
 });
 
@@ -422,7 +423,7 @@ app.post("/icu", urlencodedParser, (req, res) => {
     (err, rows, fields) => {
       if (err) {
         console.log("Failed to post for the icu: " + err);
-        res.sendStatus(500);
+        res.sendStatus(201)
         res.end();
         return;
       }
