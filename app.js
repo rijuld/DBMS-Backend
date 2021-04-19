@@ -148,7 +148,6 @@ app.delete('/patient/:id',(req,res)=>{
     res.json(rows[0])
   })
 
-  
 
 })
 
@@ -236,6 +235,33 @@ app.post("/patient", urlencodedParser, (req, res) => {
       res.sendStatus(200);
     }
   );
+  let ccc=0;
+  let ccc2=0;
+  sql = "select count(*) as c from patient group by icuid having icuid=?";
+  db.query(sql, [icuid], (err, rows, fields) => {
+    if (err) {
+      res.sendStatus(201);
+      res.end();
+      return;
+    }
+    ccc=rows[0].c;
+    console.log("hello2");
+  });
+  sql = "select capacity as c from icu where icuid=?";
+  db.query(sql, [icuid], (err, rows, fields) => {
+    if (err) {
+      res.sendStatus(201);
+      res.end();
+      return;
+    }
+    ccc2=rows[0].c;
+    if ((ccc2-ccc)<1)
+    {
+      res.sendStatus(202);
+    }
+    console.log("hello3");
+  });
+  
 
 });
 
