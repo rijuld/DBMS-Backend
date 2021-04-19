@@ -18,8 +18,8 @@ var corsOptions = {
 const db = mysql.createConnection({
   host: "localhost", //your ip address
   user: "root", //write your mysql user here
-  password: "****", //write your mysql password here
-  database: "dbms", //your database name
+  password: "Deva56nshi?", //write your mysql password here
+  database: "dbsm", //your database name
 });
 db.connect((err) => {
   if (err) throw err;
@@ -34,6 +34,10 @@ app.use(express.urlencoded({ extended: false }));
 //perso
 //PATIENT TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+app.listen(5000,()=>{
+
+})
+
 
 app.get('/patient/:id',(req,res)=>{
   console.log("fetching user with id: "+ req.params.id)
@@ -223,15 +227,15 @@ app.post("/patient", urlencodedParser, (req, res) => {
     (err, rows, fields) => {
       if (err) {
         console.log("Failed to post for the patient: " + err);
-        res.sendStatus(500);
+        res.sendStatus(201);
         res.end();
         return;
       }
       console.log("I think we posted patient successfully");
+      res.sendStatus(200);
     }
   );
-  console.log(req.body.dob);
-  res.status(200).send("Created patient");
+  
 });
 
 app.post("/patientphone", urlencodedParser, (req, res) => {
@@ -349,15 +353,15 @@ app.post("/doctor", urlencodedParser, (req, res) => {
     (err, rows, fields) => {
       if (err) {
         console.log("Failed to post for the doctor: " + err);
-        res.sendStatus(500);
+        res.sendStatus(201);
         res.end();
         return;
       }
       console.log("I think we posted doctor successfully");
+      res.sendStatus(200);
     }
   );
-  console.log(req.body.dob);
-  res.status(200).send("Created doctor");
+  
 });
 
 //ICU TABLE
@@ -422,15 +426,17 @@ app.post("/icu", urlencodedParser, (req, res) => {
     (err, rows, fields) => {
       if (err) {
         console.log("Failed to post for the icu: " + err);
-        res.sendStatus(500);
+        res.sendStatus(201);
         res.end();
-        return;
+        return
       }
+      
+
+      res.sendStatus(200);
       console.log("I think we posted icu successfully");
     }
   );
-  console.log(req.body.dob);
-  res.status(200).send("Created icu");
+ 
 });
 
 app.post("/icuphone", urlencodedParser, (req, res) => {
@@ -441,14 +447,13 @@ app.post("/icuphone", urlencodedParser, (req, res) => {
   db.query(sql, [contact_no, icuid], (err, rows, fields) => {
     if (err) {
       console.log("Failed to post for the icu phone number: " + err);
-      res.sendStatus(500);
+      res.sendStatus(201);
       res.end();
       return;
     }
     console.log("I think we posted icu phone number successfully");
   });
-  console.log(req.body.dob);
-  res.status(200).send("Created icu Phone number");
+  
 });
 //ORGAN TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
