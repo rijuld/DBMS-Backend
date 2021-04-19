@@ -13,7 +13,9 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 var corsOptions = {
   origin: "http://localhost:3000",
+
   optionsSuccessStatus: 200,
+
 };
 const db = mysql.createConnection({
   host: "localhost", //your ip address
@@ -34,12 +36,15 @@ app.use(express.urlencoded({ extended: false }));
 //perso
 //PATIENT TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 app.listen(5000, () => {});
+
 
 app.get("/patient/:id", (req, res) => {
   console.log("fetching user with id: " + req.params.id);
   let patientid = parseInt(req.params.id);
   let sql = "Select * from patient where pid = ?";
+
   let array = [];
   db.query(sql, [patientid], (err, rows, fields) => {
     if (err) {
@@ -115,6 +120,7 @@ app.delete("/patient/:id", (req, res) => {
   });
 
   sql = "delete from receiveorgans where patientid = ?";
+
   db.query(sql, [patientid], (err, rows, fields) => {
     if (err) {
       console.log("Failed to query for the patient: " + err);
@@ -122,6 +128,7 @@ app.delete("/patient/:id", (req, res) => {
       res.end();
       return;
     }
+
     console.log("HELLO");
     res.json(rows[0]);
   });
@@ -136,6 +143,7 @@ app.delete("/patient/:id", (req, res) => {
     }
     console.log("HELLO");
     res.json(rows[0]);
+
   });
 });
 
@@ -148,7 +156,9 @@ app.get("/patient", (req, res) => {
       res.end();
       return;
     }
+
     console.log("patient route all");
+
     res.json(rows);
   });
 });
@@ -214,11 +224,14 @@ app.post("/patient", urlencodedParser, (req, res) => {
     (err, rows, fields) => {
       if (err) {
         console.log("Failed to post for the patient: " + err);
-        res.sendStatus(201);
+
+res.sendStatus(201);
+
         res.end();
         return;
       }
       console.log("I think we posted patient successfully");
+
       res.sendStatus(200);
     }
   );
@@ -242,6 +255,7 @@ app.post("/patientphone", urlencodedParser, (req, res) => {
   res.status(200).send("Created patient Phone number");
 });
 
+
 //DOCTOR TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get("/doctor/:id", (req, res) => {
@@ -256,6 +270,7 @@ app.get("/doctor/:id", (req, res) => {
       return;
     }
     console.log("I think we fetched doctors successfully");
+
     res.json(rows[0]);
   });
 });
@@ -309,6 +324,7 @@ app.post("/doctorphone", urlencodedParser, (req, res) => {
   console.log(req.body.dob);
   res.status(200).send("Created doctor phone number");
 });
+
 app.get("/doctor", (req, res) => {
   let sql = "Select * from doctor";
   db.query(sql, (err, rows, fields) => {
@@ -339,14 +355,18 @@ app.post("/doctor", urlencodedParser, (req, res) => {
     (err, rows, fields) => {
       if (err) {
         console.log("Failed to post for the doctor: " + err);
+
         res.sendStatus(201);
+
         res.end();
         return;
       }
       console.log("I think we posted doctor successfully");
+
       res.sendStatus(200);
     }
   );
+
 });
 
 //ICU TABLE
@@ -363,7 +383,9 @@ app.get("/icu/:id", (req, res) => {
       return;
     }
     console.log("I think we fetched icus successfully");
+
     res.json(rows[0]);
+
   });
 });
 app.get("/icu", (req, res) => {
@@ -411,6 +433,7 @@ app.post("/icu", urlencodedParser, (req, res) => {
     (err, rows, fields) => {
       if (err) {
         console.log("Failed to post for the icu: " + err);
+
         res.sendStatus(201);
         res.end();
         return;
@@ -454,6 +477,7 @@ app.post("/icu_doc", urlencodedParser, (req, res) => {
   });
   //console.log(req.body.dob);
   res.status(200).send("Created doc in icu");
+
 });
 //ORGAN TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -469,7 +493,9 @@ app.get("/organ/:id", (req, res) => {
       return;
     }
     console.log("I think we fetched organs successfully");
+
     res.json(rows[0]);
+
   });
 });
 
@@ -503,6 +529,7 @@ app.post("/organ", urlencodedParser, (req, res) => {
     }
     console.log("I think we posted organ successfully");
   });
+
 
   //console.log(req.body.organid)
   res.status(200).send("Created organ");
@@ -592,6 +619,7 @@ app.post("/donateorgans", urlencodedParser, (req, res) => {
   res.status(200).send("Created organ");
 });
 
+
 //DEPARTMENT TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get("/department/:id", (req, res) => {
@@ -606,7 +634,9 @@ app.get("/department/:id", (req, res) => {
       return;
     }
     console.log("I think we fetched departments successfully");
+
     res.json(rows[0]);
+
   });
 });
 
@@ -629,6 +659,7 @@ app.post("/department", urlencodedParser, (req, res) => {
   const dept_id = req.body.dept_id;
   const dept_name = req.body.dept_name;
   const capacity = req.body.capacity;
+
 
   let sql = "INSERT INTO department values(?,?,?)";
   db.query(sql, [dept_id, dept_name, capacity], (err, rows, fields) => {
@@ -721,13 +752,16 @@ app.get("/login_doctor/:did/:password", (req, res) => {
   db.query(sql, [did, password], (err, rows, fields) => {
     if (err) {
       console.log("Failed to query  " + err);
+
       res.sendStatus(500);
       res.end();
       return;
     }
+
     console.log("I think we fetched");
     res.json(rows[0]);
   });
+
 });
 
 //DON'T EDIT THE PART WRITTEN BELOW
