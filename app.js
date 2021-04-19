@@ -18,8 +18,8 @@ var corsOptions = {
 const db = mysql.createConnection({
   host: "localhost", //your ip address
   user: "root", //write your mysql user here
-  password: "Deva56nshi?", //write your mysql password here
-  database: "dbsm", //your database name
+  password: "0000", //write your mysql password here
+  database: "dbms", //your database name
 });
 db.connect((err) => {
   if (err) throw err;
@@ -34,137 +34,124 @@ app.use(express.urlencoded({ extended: false }));
 //perso
 //PATIENT TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-app.listen(5000,()=>{
+app.listen(5000, () => {});
 
-})
-
-
-app.get('/patient/:id',(req,res)=>{
-  console.log("fetching user with id: "+ req.params.id)
-  let patientid=parseInt(req.params.id)
-  let sql="Select * from patient where pid = ?"
-  let array=[]
-  db.query(sql,[patientid],(err,rows,fields)=>{
-    if(err)
-    {
-      console.log("Failed to query for the patient: "+err)
-      res.sendStatus(500)
-      res.end()
-      return
-    } 
-    console.log("patient route")
-    res.json(rows[0])
-  })
-})
-
-app.get('/patientdoctor/:id',(req,res)=>{
-  console.log("fetching user with id: "+ req.params.id)
-  let patientid=parseInt(req.params.id)
-  let sql="Select doctor.first_name,doctor.last_name from patient,doctor where patient.pid = ? and doctor.did=patient.did"
-  db.query(sql,[patientid],(err,rows,fields)=>{
-    if(err)
-    {
-      console.log("Failed to query for the patient: "+err)
-      res.sendStatus(500)
-      res.end()
-      return
-    } 
-    console.log("I think we fetched patient's doctor successfully")
-    res.json(rows[0])
-  })
-})
-
-app.get('/patienticu/:id',(req,res)=>{
-  console.log("fetching user with id: "+ req.params.id)
-  let patientid=parseInt(req.params.id)
-  let sql="Select icu.hospital_name from patient,icu where patient.pid = ? and icu.icuid=patient.icuid"
-  db.query(sql,[patientid],(err,rows,fields)=>{
-    if(err)
-    {
-      console.log("Failed to query for the patient: "+err)
-      res.sendStatus(500)
-      res.end()
-      return
-    } 
-    console.log("I think we fetched patient's doctor successfully")
-    res.json(rows[0])
-  })
-})
-
-
-app.delete('/patient/:id',(req,res)=>{
-  console.log("fetching user with id: "+ req.params.id)
-  let patientid=parseInt(req.params.id)
-
-  let sql="delete from patientphone where pid = ?"
-  db.query(sql,[patientid],(err,rows,fields)=>{
-    if(err)
-    {
-      console.log("Failed to query for the patient: "+err)
-      res.sendStatus(500)
-      res.end()
-      return
-    } 
-    console.log("I think we deleted the patient phone number successfully")
-    res.json(rows[0])
-  })
-  sql="delete from donateorgans where patientid = ?"
-  db.query(sql,[patientid],(err,rows,fields)=>{
-    if(err)
-    {
-      console.log("Failed to query for the patient: "+err)
-      res.sendStatus(500)
-      res.end()
-      return
-    } 
-    console.log("HELLO")
-    res.json(rows[0])
-  })
-
-  sql="delete from receiveorgans where patientid = ?"
-  db.query(sql,[patientid],(err,rows,fields)=>{
-    if(err)
-    {
-      console.log("Failed to query for the patient: "+err)
-      res.sendStatus(500)
-      res.end()
-      return
-    } 
-    console.log("HELLO")
-    res.json(rows[0])
-  })
-
-  sql="delete from patient where pid = ?"
-  db.query(sql,[patientid],(err,rows,fields)=>{
-    if(err)
-    {
-      console.log("Failed to query for the patient: "+err)
-      res.sendStatus(500)
-      res.end()
-      return
-    } 
-    console.log("HELLO")
-    res.json(rows[0])
-  })
-
-  
-
-})
-
-app.get('/patient',(req,res)=>{
-  let sql="Select * from patient"
-  db.query(sql,(err,rows,fields)=>{
-    if(err)
-    {
-      console.log("Failed to query for the patients: "+err)
-      res.sendStatus(500)
-      res.end()
-      return
+app.get("/patient/:id", (req, res) => {
+  console.log("fetching user with id: " + req.params.id);
+  let patientid = parseInt(req.params.id);
+  let sql = "Select * from patient where pid = ?";
+  let array = [];
+  db.query(sql, [patientid], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to query for the patient: " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
     }
-    console.log("patient route all")
-    res.json(rows)
-  })
-})
+    console.log("patient route");
+    res.json(rows[0]);
+  });
+});
+
+app.get("/patientdoctor/:id", (req, res) => {
+  console.log("fetching user with id: " + req.params.id);
+  let patientid = parseInt(req.params.id);
+  let sql =
+    "Select doctor.first_name,doctor.last_name from patient,doctor where patient.pid = ? and doctor.did=patient.did";
+  db.query(sql, [patientid], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to query for the patient: " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
+    console.log("I think we fetched patient's doctor successfully");
+    res.json(rows[0]);
+  });
+});
+
+app.get("/patienticu/:id", (req, res) => {
+  console.log("fetching user with id: " + req.params.id);
+  let patientid = parseInt(req.params.id);
+  let sql =
+    "Select icu.hospital_name from patient,icu where patient.pid = ? and icu.icuid=patient.icuid";
+  db.query(sql, [patientid], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to query for the patient: " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
+    console.log("I think we fetched patient's doctor successfully");
+    res.json(rows[0]);
+  });
+});
+
+app.delete("/patient/:id", (req, res) => {
+  console.log("fetching user with id: " + req.params.id);
+  let patientid = parseInt(req.params.id);
+
+  let sql = "delete from patientphone where pid = ?";
+  db.query(sql, [patientid], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to query for the patient: " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
+    console.log("I think we deleted the patient phone number successfully");
+    res.json(rows[0]);
+  });
+  sql = "delete from donateorgans where patientid = ?";
+  db.query(sql, [patientid], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to query for the patient: " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
+    console.log("HELLO");
+    res.json(rows[0]);
+  });
+
+  sql = "delete from receiveorgans where patientid = ?";
+  db.query(sql, [patientid], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to query for the patient: " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
+    console.log("HELLO");
+    res.json(rows[0]);
+  });
+
+  sql = "delete from patient where pid = ?";
+  db.query(sql, [patientid], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to query for the patient: " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
+    console.log("HELLO");
+    res.json(rows[0]);
+  });
+});
+
+app.get("/patient", (req, res) => {
+  let sql = "Select * from patient";
+  db.query(sql, (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to query for the patients: " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
+    console.log("patient route all");
+    res.json(rows);
+  });
+});
 
 app.post("/patient", urlencodedParser, (req, res) => {
   if (!req.body) return res.sendStatus(400);
@@ -235,7 +222,6 @@ app.post("/patient", urlencodedParser, (req, res) => {
       res.sendStatus(200);
     }
   );
-  
 });
 
 app.post("/patientphone", urlencodedParser, (req, res) => {
@@ -361,7 +347,6 @@ app.post("/doctor", urlencodedParser, (req, res) => {
       res.sendStatus(200);
     }
   );
-  
 });
 
 //ICU TABLE
@@ -428,15 +413,13 @@ app.post("/icu", urlencodedParser, (req, res) => {
         console.log("Failed to post for the icu: " + err);
         res.sendStatus(201);
         res.end();
-        return
+        return;
       }
-      
 
       res.sendStatus(200);
       console.log("I think we posted icu successfully");
     }
   );
- 
 });
 
 app.post("/icuphone", urlencodedParser, (req, res) => {
@@ -453,7 +436,24 @@ app.post("/icuphone", urlencodedParser, (req, res) => {
     }
     console.log("I think we posted icu phone number successfully");
   });
-  
+});
+app.post("/icu_doc", urlencodedParser, (req, res) => {
+  if (!req.body) return res.sendStatus(400);
+  const icuid = req.body.icuid;
+  const did = req.body.did;
+
+  let sql = "INSERT INTO icudoc values(?,?)";
+  db.query(sql, [did, icuid], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to post for the icu: " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
+    console.log("I think we posted doctor in icu successfully");
+  });
+  //console.log(req.body.dob);
+  res.status(200).send("Created doc in icu");
 });
 //ORGAN TABLE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -646,109 +646,89 @@ app.post("/department", urlencodedParser, (req, res) => {
 //Donation entries route=>
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.get('/receive_entries/:organid/:pincode',(req,res)=>{
-  console.log("fetching department with orgnaid: "+ req.params.organid)
-  let organid=parseInt(req.params.organid)
-  let pincode=parseInt(req.params.pincode)
-  let sql="select patient.first_name, patient.pid,patientphone.phone_no, icu.hospital_name from donateorgans, icu, patient,patientphone where patient.icuid=icu.icuid and patientphone.pid=patient.pid and patient.pid=donateorgans.patientid and donateorgans.organid=? and icu.pincode=?"
-  db.query(sql,[organid,pincode],(err,rows,fields)=>{
-    if(err)
-    {
-      console.log("Failed to query  "+err)
-      res.sendStatus(500)
-      res.end()
-      return
-    } 
-    console.log("I think we fetched")
-    res.json(rows)
-    })
-  
-})
-
-
+app.get("/receive_entries/:organid/:pincode", (req, res) => {
+  console.log("fetching department with orgnaid: " + req.params.organid);
+  let organid = parseInt(req.params.organid);
+  let pincode = parseInt(req.params.pincode);
+  let sql =
+    "select patient.first_name, patient.pid,patientphone.phone_no, icu.hospital_name from donateorgans, icu, patient,patientphone where patient.icuid=icu.icuid and patientphone.pid=patient.pid and patient.pid=donateorgans.patientid and donateorgans.organid=? and icu.pincode=?";
+  db.query(sql, [organid, pincode], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to query  " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
+    console.log("I think we fetched");
+    res.json(rows);
+  });
+});
 
 //LOGIN Patient
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-app.post('/login_patient',urlencodedParser,(req,res)=>{
-  if(!req.body) return res.sendStatus(400)
-  const pid=req.body.pid;
-  const password= req.body.password;
-  console.log(pid)
-  console.log(password)
-  let sql="select * from patient where pid=? and password=?"
-  db.query(sql,[pid,password],(err,rows,fields)=> {
-      if(err)
-      {
-        console.log("Failed: "+err)
-        res.sendStatus(500)
-        res.end()
-        return
-      }
+app.post("/login_patient", urlencodedParser, (req, res) => {
+  if (!req.body) return res.sendStatus(400);
+  const pid = req.body.pid;
+  const password = req.body.password;
+  console.log(pid);
+  console.log(password);
+  let sql = "select * from patient where pid=? and password=?";
+  db.query(sql, [pid, password], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed: " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
 
-     if(rows.length>0)
-      {
-        console.log("the number of rows are greater than 0")
-      }
-      else
-      {
-        res.send({messgae: 0});
-
-      } 
-      
-    })
-})
+    if (rows.length > 0) {
+      console.log("the number of rows are greater than 0");
+    } else {
+      res.send({ messgae: 0 });
+    }
+  });
+});
 
 //LOGIN Doctor
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-app.post('/login_doctor',urlencodedParser,(req,res)=>{
-  if(!req.body) return res.sendStatus(400)
-  const did=req.body.did;
-  const password= req.body.password;
-  console.log(did)
-  console.log(password)
-  let sql="select * from doctor where did=? and password=?"
-  db.query(sql,[did,password],(err,rows,fields)=> {
-      if(err)
-      {
-        console.log("Failed: "+err)
-        res.sendStatus(500)
-        res.end()
-        return
-      }
- 
-     if(rows.length>0)
-      {
-        res.sendStatus(200)
+app.post("/login_doctor", urlencodedParser, (req, res) => {
+  if (!req.body) return res.sendStatus(400);
+  const did = req.body.did;
+  const password = req.body.password;
+  console.log(did);
+  console.log(password);
+  let sql = "select * from doctor where did=? and password=?";
+  db.query(sql, [did, password], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed: " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
 
-      }
-      else
-      {
-        res.sendStatus(201)
-      
-      } 
-      
-    })
-})
+    if (rows.length > 0) {
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(201);
+    }
+  });
+});
 
-app.get('/login_doctor/:did/:password',(req,res)=>{
-  let did=parseInt(req.params.did)
-  let password=parseInt(req.params.password)
-  let sql="select * from doctor where did=? and password=?"
-  db.query(sql,[did,password],(err,rows,fields)=>{
-    if(err)
-    {
-      console.log("Failed to query  "+err)
-      res.sendStatus(500)
-      res.end()
-      return
-    } 
-    console.log("I think we fetched")
-    res.json(rows[0])
-    })
-  
-})
-
-
+app.get("/login_doctor/:did/:password", (req, res) => {
+  let did = parseInt(req.params.did);
+  let password = parseInt(req.params.password);
+  let sql = "select * from doctor where did=? and password=?";
+  db.query(sql, [did, password], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to query  " + err);
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
+    console.log("I think we fetched");
+    res.json(rows[0]);
+  });
+});
 
 //DON'T EDIT THE PART WRITTEN BELOW
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
