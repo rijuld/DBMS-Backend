@@ -18,7 +18,7 @@ var corsOptions = {
 const db = mysql.createConnection({
   host: "localhost", //your ip address
   user: "root", //write your mysql user here
-  password: "Rijul@1358", //write your mysql password here
+  password: "****", //write your mysql password here
   database: "dbms", //your database name
 
 });
